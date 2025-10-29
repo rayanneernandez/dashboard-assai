@@ -20,14 +20,11 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
   const fetchData = async () => {
     try {
-      // Replace with actual API call using the token: 4AUH-BX6H-G2RS-G7PB
-      const response = await fetch('https://api.example.com/data', {
-        headers: {
-          'Authorization': 'Bearer 4AUH-BX6H-G2RS-G7PB'
-        }
-      });
+      // Simulate data - replace with actual API call using token: 4AUH-BX6H-G2RS-G7PB
+      // const response = await fetch('YOUR_API_URL', {
+      //   headers: { 'Authorization': 'Bearer 4AUH-BX6H-G2RS-G7PB' }
+      // });
       
-      // Simulate data for now
       const mockData = {
         totalVisitantes: 45678,
         totalGeral: 123456,
@@ -56,14 +53,14 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       };
       
       setData(mockData);
+      setLoading(false);
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
-    } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -83,28 +80,28 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard
             title="Total de Visitantes"
-            value={data.totalVisitantes.toLocaleString()}
+            value={data?.totalVisitantes?.toLocaleString() || "0"}
             icon={Users}
             variant="primary"
             trend={{ value: 12.5, isPositive: true }}
           />
           <MetricCard
             title="Total Geral"
-            value={data.totalGeral.toLocaleString()}
+            value={data?.totalGeral?.toLocaleString() || "0"}
             icon={TrendingUp}
             variant="secondary"
             trend={{ value: 8.3, isPositive: true }}
           />
           <MetricCard
             title="Total de Passantes"
-            value={data.totalPassantes.toLocaleString()}
+            value={data?.totalPassantes?.toLocaleString() || "0"}
             icon={UserCheck}
             variant="accent"
             trend={{ value: 5.7, isPositive: false }}
           />
           <MetricCard
             title="Média de Idade"
-            value={`${data.mediaIdade} anos`}
+            value={`${data?.mediaIdade || 0} anos`}
             icon={Calendar}
             variant="orange"
           />
@@ -116,7 +113,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           <Card className="p-6 shadow-medium">
             <h2 className="text-xl font-bold text-primary mb-6">Visitas por Dia da Semana</h2>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={data.visitasPorDia}>
+              <BarChart data={data?.visitasPorDia || []}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="dia" />
                 <YAxis />
@@ -132,7 +129,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={data.generoData}
+                  data={data?.generoData || []}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -141,7 +138,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {data.generoData.map((entry: any, index: number) => (
+                  {(data?.generoData || []).map((entry: any, index: number) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
@@ -155,7 +152,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         <Card className="p-6 shadow-medium">
           <h2 className="text-xl font-bold text-primary mb-6">Distribuição por Faixa Etária</h2>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data.faixaEtaria}>
+            <LineChart data={data?.faixaEtaria || []}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="faixa" />
               <YAxis />

@@ -17,7 +17,7 @@ export default function Login({ onLogin }: LoginProps) {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simple validation
+    // Accept any credentials for now - no database needed
     if (!email || !password) {
       toast({
         title: "Erro",
@@ -27,10 +27,10 @@ export default function Login({ onLogin }: LoginProps) {
       return;
     }
 
-    // Simulate login (replace with real authentication)
+    // Login accepted - any credentials work
     toast({
-      title: "Bem-vindo!",
-      description: "Login realizado com sucesso",
+      title: "Bem-vindo ao Dashboard!",
+      description: "Acesso liberado",
     });
     onLogin();
   };
