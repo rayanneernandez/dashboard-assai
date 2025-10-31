@@ -44,6 +44,10 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       const totalPassantes = basePassantes * storeFactor * daysDiff;
       const mediaIdade = 38;
       
+      // Calcular totais por gênero
+      const totalHomens = Math.floor(totalVisitantes * 0.52);
+      const totalMulheres = Math.floor(totalVisitantes * 0.48);
+      
       const generoData = [
         { name: "Masculino", value: 52, color: "hsl(var(--chart-1))" },
         { name: "Feminino", value: 48, color: "hsl(var(--chart-2))" }
@@ -83,8 +87,8 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       
       const processedData = {
         totalVisitantes,
-        totalGeral: totalVisitantes + totalPassantes,
-        totalPassantes,
+        totalHomens,
+        totalMulheres,
         mediaIdade,
         generoData,
         visitasPorDia,
@@ -133,15 +137,15 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             trend={{ value: 12.5, isPositive: true }}
           />
           <MetricCard
-            title="Total Geral"
-            value={data?.totalGeral?.toLocaleString() || "0"}
+            title="Total de Homens"
+            value={data?.totalHomens?.toLocaleString() || "0"}
             icon={TrendingUp}
             variant="secondary"
             trend={{ value: 8.3, isPositive: true }}
           />
           <MetricCard
-            title="Total de Passantes"
-            value={data?.totalPassantes?.toLocaleString() || "0"}
+            title="Total de Mulheres"
+            value={data?.totalMulheres?.toLocaleString() || "0"}
             icon={UserCheck}
             variant="accent"
             trend={{ value: 5.7, isPositive: false }}
